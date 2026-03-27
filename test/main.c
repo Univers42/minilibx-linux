@@ -43,13 +43,13 @@ int	color_map_2(unsigned char *data,int bpp,int sl,int w,int h,int endian, int t
 
 int	expose_win1(void *p)
 {
-  mlx_put_image_to_window(mlx,win1,im3,0,0);
+  mlx_put_image_to_window(mlx,win1,im3,(t_mlx_point){0,0});
 }
 
 int	expose_win2(void *p)
 {
-  mlx_put_image_to_window(mlx,win2,im4,0,0);
-  mlx_put_image_to_window(mlx,win2,im2,0,0);
+  mlx_put_image_to_window(mlx,win2,im4,(t_mlx_point){0,0});
+  mlx_put_image_to_window(mlx,win2,im2,(t_mlx_point){0,0});
 }
 
 int	key_win1(int key,void *p)
@@ -142,7 +142,7 @@ int	main()
   printf("OK (pixmap : %d)\n",(int)((t_img *)im1)->pix);
 
   printf(" => Put Image1 ...");
-  mlx_put_image_to_window(mlx,win1,im1,20,20);
+  mlx_put_image_to_window(mlx,win1,im1,(t_mlx_point){20,20});
   printf("OK\n");
   sleep(2);
 
@@ -166,13 +166,13 @@ int	main()
   printf("OK (pixmap : %d)\n",(int)((t_img *)im3)->pix);
 
   printf(" => Put Image3 ...");
-  mlx_put_image_to_window(mlx,win1,im3,20,20);
+  mlx_put_image_to_window(mlx,win1,im3,(t_mlx_point){20,20});
   printf("OK\n");
   sleep(2);
 
   printf(" => String ...");
-  mlx_string_put(mlx,win1,5,WIN1_SY/2,0xFF99FF,"String output");
-  mlx_string_put(mlx,win1,15,WIN1_SY/2+20,0x00FFFF,"MinilibX test");
+  mlx_string_put(mlx,win1,(t_mlx_str){5,WIN1_SY/2,0xFF99FF},"String output");
+  mlx_string_put(mlx,win1,(t_mlx_str){15,WIN1_SY/2+20,0x00FFFF},"MinilibX test");
   printf("OK\n");
   sleep(2);
 
@@ -188,8 +188,8 @@ int	main()
   sleep(2);
 
   printf(" => Put xpm ...");
-  mlx_put_image_to_window(mlx,win1,im2,0,0);
-  mlx_put_image_to_window(mlx,win1,im2,100,100);
+  mlx_put_image_to_window(mlx,win1,im2,(t_mlx_point){0,0});
+  mlx_put_image_to_window(mlx,win1,im2,(t_mlx_point){100,100});
   printf("OK\n");
   sleep(2);
 
@@ -213,7 +213,7 @@ int	main()
   mlx_key_hook(win2,key_win2,0);
   mlx_key_hook(win3,key_win3,0);
 
-  mlx_hook(win3, MotionNotify, PointerMotionMask, mouse_win3, 0);
+  mlx_hook(win3, MotionNotify, PointerMotionMask, (t_mlx_hcb){mouse_win3, 0});
 
   printf("OK\nNow in Loop. Just play. Esc in 3 to destroy, 1&2 to quit.\n");
   
@@ -234,7 +234,7 @@ int	color_map_1(void *win,int w,int h)
       while (y--)
         {
           color = (x*255)/w+((((w-x)*255)/w)<<16)+(((y*255)/h)<<8);
-	  mlx_pixel_put(mlx,win,x,y,color);
+	  mlx_pixel_put(mlx,win,(t_mlx_point){x,y},color);
         }
     }
 }
